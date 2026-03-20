@@ -3,426 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BRAND SCALING · Product Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Brand Scaling · Product Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 :root {
-  --bg:       #080C10;
-  --surface:  #0E1318;
-  --card:     #131A22;
-  --border:   #1E2A36;
-  --accent:   #00E5FF;
-  --accent2:  #FF6B35;
-  --gold:     #FFD166;
-  --green:    #06D6A0;
-  --red:      #EF476F;
-  --text:     #E8EDF2;
-  --muted:    #5A7080;
-  --glow:     rgba(0,229,255,0.15);
+  --glass: rgba(255,255,255,0.07);
+  --glass-border: rgba(255,255,255,0.14);
+  --glass-hover: rgba(255,255,255,0.11);
+  --accent: #4fa3ff;
+  --accent2: #a78bfa;
+  --gold: #fbbf24;
+  --green: #34d399;
+  --red: #f87171;
+  --text: #f0f4ff;
+  --muted: rgba(240,244,255,0.5);
+  --muted2: rgba(240,244,255,0.28);
+  --blur: blur(28px) saturate(200%);
+  --blur-sm: blur(14px) saturate(160%);
+  --radius: 20px;
+  --radius-sm: 14px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Outfit',sans-serif;
-  font-weight:400;
-  min-height:100vh;
-  overflow-x:hidden;
-}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#080e1f;color:var(--text);min-height:100vh;overflow-x:hidden;font-size:16px;}
 
-/* ── NOISE OVERLAY ─────────────────────────── */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:0;opacity:.4;
-}
+.bg-orbs{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);opacity:.3;animation:drift 22s ease-in-out infinite alternate;}
+.orb-1{width:700px;height:700px;background:radial-gradient(circle,#1a3a8a,transparent);top:-250px;left:-250px;}
+.orb-2{width:550px;height:550px;background:radial-gradient(circle,#6d28d9,transparent);top:25%;right:-180px;animation-delay:-8s;}
+.orb-3{width:500px;height:500px;background:radial-gradient(circle,#0e7490,transparent);bottom:-120px;left:25%;animation-delay:-15s;}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,35px) scale(1.12)}}
 
-/* ── HEADER ─────────────────────────────────── */
-header{
-  position:relative;
-  padding:48px 32px 36px;
-  border-bottom:1px solid var(--border);
-  background:linear-gradient(180deg,rgba(0,229,255,0.04) 0%,transparent 100%);
-  z-index:1;
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px;}
+.login-card{
+  width:100%;max-width:480px;
+  background:rgba(8,14,35,0.65);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--glass-border);border-radius:28px;
+  padding:52px 44px;text-align:center;
+  box-shadow:0 40px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);
 }
-.header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.logo-block{}
-.logo-tag{
-  font-size:10px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--accent);display:block;margin-bottom:8px;
-}
-h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(32px,5vw,56px);
-  letter-spacing:2px;
-  line-height:1;
-  color:#fff;
-}
-h1 span{color:var(--accent);}
-.by-line{
-  margin-top:6px;font-size:12px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;
-}
-.status-badge{
-  display:flex;align-items:center;gap:8px;
-  background:rgba(6,214,160,0.08);
-  border:1px solid rgba(6,214,160,0.2);
-  border-radius:40px;padding:8px 18px;
-  font-size:12px;color:var(--green);letter-spacing:1px;
-}
+.login-icon{width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,rgba(79,163,255,0.25),rgba(167,139,250,0.25));border:1px solid rgba(79,163,255,0.35);backdrop-filter:var(--blur-sm);display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 24px;box-shadow:0 8px 32px rgba(79,163,255,0.18);}
+.login-app-name{font-size:28px;font-weight:800;background:linear-gradient(135deg,#fff,#a5c8ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;line-height:1.2;}
+.login-subtitle{font-size:15px;color:var(--muted);line-height:1.6;margin-bottom:8px;}
+.login-badge{display:inline-block;margin:12px auto 32px;padding:6px 18px;border-radius:30px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.28);font-size:12px;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;}
+.login-field{width:100%;margin-bottom:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:var(--radius-sm);padding:15px 20px;font-size:16px;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none;transition:all .2s;}
+.login-field:focus{border-color:rgba(79,163,255,0.5);background:rgba(79,163,255,0.06);box-shadow:0 0 0 3px rgba(79,163,255,0.1);}
+.login-field::placeholder{color:var(--muted2);}
+.login-btn{width:100%;padding:17px;background:linear-gradient(135deg,#4fa3ff,#7c3aed);border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:800;color:#fff;cursor:pointer;transition:all .25s;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 8px 32px rgba(79,163,255,0.3);margin-top:6px;}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(79,163,255,0.42);}
+.login-error{color:var(--red);font-size:14px;margin-top:14px;display:none;background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:10px;padding:12px;}
+.login-creator{margin-top:28px;font-size:13px;color:var(--muted2);}
+.login-creator strong{color:#a5c8ff;}
+
+/* ── APP ── */
+#app{display:none;position:relative;z-index:1;}
+
+header{padding:24px 40px;background:rgba(8,14,35,0.65);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-bottom:1px solid var(--glass-border);position:sticky;top:0;z-index:100;}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.logo-wrap{display:flex;align-items:center;gap:14px;}
+.logo-icon{width:46px;height:46px;border-radius:13px;background:linear-gradient(135deg,rgba(79,163,255,0.28),rgba(167,139,250,0.28));border:1px solid rgba(79,163,255,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.logo-name{font-size:18px;font-weight:800;color:#fff;}
+.logo-sub{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.header-right{display:flex;align-items:center;gap:12px;}
+.status-pill{display:flex;align-items:center;gap:8px;padding:8px 18px;border-radius:30px;background:rgba(52,211,153,0.09);border:1px solid rgba(52,211,153,0.22);font-size:14px;color:var(--green);font-weight:600;}
 .status-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.logout-btn{padding:8px 18px;border-radius:30px;background:rgba(248,113,113,0.09);border:1px solid rgba(248,113,113,0.22);color:var(--red);font-size:13px;cursor:pointer;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s;}
+.logout-btn:hover{background:rgba(248,113,113,0.18);}
 
-/* ── MAIN ───────────────────────────────────── */
-main{max-width:1100px;margin:0 auto;padding:40px 32px 80px;position:relative;z-index:1;}
+main{max-width:1200px;margin:0 auto;padding:44px 40px 100px;}
 
-/* ── SELECTOR SECTION ──────────────────────── */
-.selector-section{margin-bottom:48px;}
-.section-label{
-  font-size:10px;letter-spacing:4px;text-transform:uppercase;
-  color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:10px;
-}
-.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border),transparent);}
+.glass-card{background:var(--glass);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border:1px solid var(--glass-border);border-radius:var(--radius);box-shadow:0 8px 32px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,255,255,0.07);}
 
-/* ── BLOQUE TABS ─────────────────────────────── */
-.bloque-tabs{display:flex;gap:12px;margin-bottom:32px;}
-.bloque-tab{
-  flex:1;padding:16px 20px;
-  border:1px solid var(--border);
-  border-radius:8px;
-  background:var(--card);
-  cursor:pointer;
-  transition:all .2s;
-  text-align:center;
-}
-.bloque-tab:hover{border-color:var(--accent);background:rgba(0,229,255,0.04);}
-.bloque-tab.active{
-  border-color:var(--accent);
-  background:rgba(0,229,255,0.08);
-  box-shadow:0 0 20px rgba(0,229,255,0.1);
-}
-.bloque-tab .tab-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
-.bloque-tab .tab-title{font-size:15px;font-weight:600;color:var(--text);}
+.section-label{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:12px;font-weight:700;}
+.section-label::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(79,163,255,0.3),transparent);}
+
+.bloque-tabs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:36px;}
+.bloque-tab{padding:22px 26px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--blur-sm);cursor:pointer;transition:all .25s;text-align:center;}
+.bloque-tab:hover{background:var(--glass-hover);border-color:rgba(79,163,255,0.38);}
+.bloque-tab.active{background:rgba(79,163,255,0.11);border-color:rgba(79,163,255,0.48);box-shadow:0 0 32px rgba(79,163,255,0.14),inset 0 1px 0 rgba(79,163,255,0.18);}
+.tab-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;font-weight:600;}
+.tab-title{font-size:18px;font-weight:800;color:var(--text);}
+.tab-desc{font-size:14px;color:var(--muted);margin-top:5px;}
 .bloque-tab.active .tab-title{color:var(--accent);}
 
-/* ── MACRO GRID ─────────────────────────────── */
-.macro-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-  gap:10px;
-  margin-bottom:28px;
-}
-.macro-card{
-  padding:14px 16px;
-  border:1px solid var(--border);
-  border-radius:6px;
-  background:var(--card);
-  cursor:pointer;
-  transition:all .2s;
-}
-.macro-card:hover{border-color:rgba(0,229,255,0.4);background:rgba(0,229,255,0.03);}
-.macro-card.active{border-color:var(--accent2);background:rgba(255,107,53,0.06);}
-.macro-num{font-size:11px;color:var(--muted);margin-bottom:4px;}
-.macro-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;}
-.macro-card.active .macro-name{color:var(--accent2);}
+.macro-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:10px;margin-bottom:28px;}
+.macro-card{padding:16px 18px;border-radius:var(--radius-sm);background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--blur-sm);cursor:pointer;transition:all .2s;}
+.macro-card:hover{background:var(--glass-hover);border-color:rgba(79,163,255,0.32);}
+.macro-card.active{background:rgba(251,191,36,0.1);border-color:rgba(251,191,36,0.42);}
+.macro-num{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:600;}
+.macro-name{font-size:14px;font-weight:700;color:var(--text);line-height:1.35;}
+.macro-card.active .macro-name{color:var(--gold);}
 
-/* ── SUB GRID ───────────────────────────────── */
-.sub-section{margin-bottom:32px;}
-.sub-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}
-.sub-grid{display:flex;flex-wrap:wrap;gap:8px;}
-.sub-chip{
-  padding:8px 16px;
-  border:1px solid var(--border);
-  border-radius:40px;
-  font-size:13px;
-  cursor:pointer;
-  transition:all .2s;
-  color:var(--muted);
-}
-.sub-chip:hover{border-color:var(--gold);color:var(--gold);background:rgba(255,209,102,0.05);}
-.sub-chip.active{border-color:var(--gold);color:var(--gold);background:rgba(255,209,102,0.08);}
+.sub-grid{display:flex;flex-wrap:wrap;gap:10px;}
+.sub-chip{padding:11px 22px;border-radius:30px;background:var(--glass);border:1px solid var(--glass-border);font-size:15px;cursor:pointer;transition:all .2s;color:var(--muted);backdrop-filter:var(--blur-sm);font-weight:500;}
+.sub-chip:hover{border-color:rgba(167,139,250,0.48);color:var(--accent2);background:rgba(167,139,250,0.09);}
+.sub-chip.active{border-color:rgba(167,139,250,0.58);color:var(--accent2);background:rgba(167,139,250,0.14);box-shadow:0 0 22px rgba(167,139,250,0.1);}
 
-/* ── GENERATE BUTTON ─────────────────────────── */
-.generate-wrap{display:flex;justify-content:center;margin-top:24px;}
-.btn-generate{
-  padding:16px 48px;
-  background:linear-gradient(135deg,var(--accent),#0097A7);
-  border:none;border-radius:6px;
-  font-family:'Outfit',sans-serif;
-  font-size:14px;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
-  color:#080C10;
-  cursor:pointer;
-  transition:all .25s;
-  box-shadow:0 0 30px rgba(0,229,255,0.2);
-}
-.btn-generate:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,229,255,0.35);}
-.btn-generate:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.selection-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 24px;border-radius:var(--radius-sm);background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--blur-sm);margin-bottom:28px;font-size:14px;}
+.sel-tag{padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.5px;}
+.sel-bloque{background:rgba(79,163,255,0.14);color:var(--accent);}
+.sel-macro{background:rgba(251,191,36,0.14);color:var(--gold);}
+.sel-sub{background:rgba(167,139,250,0.14);color:var(--accent2);}
+.sel-arrow{color:var(--muted2);font-size:18px;}
 
-/* ── SELECTION DISPLAY ─────────────────────── */
-.selection-bar{
-  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-  padding:14px 20px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:8px;
-  margin-bottom:24px;
-  font-size:13px;
-}
-.sel-tag{
-  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;
-}
-.sel-bloque{background:rgba(0,229,255,0.1);color:var(--accent);}
-.sel-macro{background:rgba(255,107,53,0.1);color:var(--accent2);}
-.sel-sub{background:rgba(255,209,102,0.1);color:var(--gold);}
-.sel-arrow{color:var(--muted);}
+.generate-wrap{display:flex;justify-content:center;gap:16px;margin-top:28px;flex-wrap:wrap;}
+.btn-generate{padding:18px 56px;border:none;border-radius:var(--radius-sm);background:linear-gradient(135deg,#4fa3ff,#7c3aed);font-size:17px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;cursor:pointer;transition:all .25s;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 8px 32px rgba(79,163,255,0.3);}
+.btn-generate:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(79,163,255,0.44);}
+.btn-generate:disabled{opacity:.38;cursor:not-allowed;transform:none;}
+.btn-new-search{padding:18px 40px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.18);backdrop-filter:var(--blur-sm);font-size:17px;font-weight:700;color:var(--text);cursor:pointer;transition:all .25s;font-family:'Plus Jakarta Sans',sans-serif;display:flex;align-items:center;gap:10px;}
+.btn-new-search:hover{background:rgba(255,255,255,0.13);border-color:rgba(255,255,255,0.32);transform:translateY(-2px);}
 
-/* ── RESULTS AREA ───────────────────────────── */
-#results{margin-top:48px;}
-.results-header{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:28px;flex-wrap:wrap;gap:12px;
-}
-.results-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(22px,4vw,36px);
-  letter-spacing:2px;color:#fff;
-}
-.results-title span{color:var(--accent);}
-.results-meta{font-size:12px;color:var(--muted);}
-
-/* ── LOADING ────────────────────────────────── */
-.loading-block{
-  text-align:center;padding:80px 32px;
-}
-.loading-spinner{
-  width:48px;height:48px;
-  border:2px solid var(--border);
-  border-top-color:var(--accent);
-  border-radius:50%;
-  animation:spin 1s linear infinite;
-  margin:0 auto 24px;
-}
+.loading-block{text-align:center;padding:100px 32px;}
+.loading-ring{width:64px;height:64px;border-radius:50%;border:3px solid rgba(79,163,255,0.18);border-top-color:var(--accent);animation:spin 1s linear infinite;margin:0 auto 28px;box-shadow:0 0 30px rgba(79,163,255,0.18);}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-size:14px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
-.loading-sub{font-size:12px;color:var(--border);margin-top:8px;}
+.loading-text{font-size:19px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.loading-sub{font-size:15px;color:var(--muted);}
 
-/* ── TABLE ──────────────────────────────────── */
-.table-wrap{overflow-x:auto;margin-bottom:40px;}
-table{width:100%;border-collapse:collapse;font-size:12px;}
-thead tr{background:var(--card);border-bottom:2px solid var(--accent);}
-th{
-  padding:12px 14px;text-align:left;
-  font-size:9px;letter-spacing:2px;text-transform:uppercase;
-  color:var(--accent);font-weight:600;white-space:nowrap;
-}
-tbody tr{border-bottom:1px solid var(--border);transition:background .15s;}
-tbody tr:hover{background:rgba(0,229,255,0.03);}
-td{padding:12px 14px;vertical-align:top;line-height:1.5;}
-td a{color:var(--accent);text-decoration:none;font-size:11px;}
-td a:hover{text-decoration:underline;}
-.score-bar{
-  display:flex;align-items:center;gap:8px;
-}
-.score-num{font-weight:700;font-size:13px;}
-.score-num.green{color:var(--green);}
-.score-num.yellow{color:var(--gold);}
-.score-num.red{color:var(--red);}
-.badge{
-  display:inline-block;padding:2px 8px;border-radius:3px;font-size:10px;font-weight:600;letter-spacing:.5px;
-}
-.badge-green{background:rgba(6,214,160,0.15);color:var(--green);}
-.badge-yellow{background:rgba(255,209,102,0.15);color:var(--gold);}
-.badge-red{background:rgba(239,71,111,0.15);color:var(--red);}
+#results{margin-top:52px;}
+.results-top-bar{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px;}
+.results-title{font-size:clamp(24px,4vw,42px);font-weight:800;color:#fff;}
+.results-title span{background:linear-gradient(135deg,#4fa3ff,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.results-meta{font-size:15px;color:var(--muted);margin-top:5px;}
 
-/* ── PRODUCT CARDS ──────────────────────────── */
-.products-grid{display:grid;gap:16px;margin-bottom:40px;}
-.product-card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:10px;
-  padding:24px;
-  transition:border-color .2s;
-  position:relative;
-  overflow:hidden;
-}
-.product-card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  opacity:0;transition:opacity .2s;
-}
-.product-card:hover{border-color:rgba(0,229,255,0.3);}
-.product-card:hover::before{opacity:1;}
-.card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap;}
-.card-rank{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:42px;color:var(--border);line-height:1;flex-shrink:0;
-}
-.card-info{flex:1;}
-.card-product-name{font-size:16px;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.3;}
-.card-brand{font-size:12px;color:var(--muted);}
-.card-score-block{text-align:right;flex-shrink:0;}
-.card-score-big{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:36px;line-height:1;
-}
-.card-score-label{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
-.card-url{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:11px;color:var(--accent);
-  margin-bottom:14px;
-  background:rgba(0,229,255,0.06);
-  padding:4px 12px;border-radius:4px;
-  text-decoration:none;
-}
-.card-url:hover{background:rgba(0,229,255,0.12);}
-.card-bullets{list-style:none;margin-bottom:16px;}
-.card-bullets li{
-  font-size:13px;color:rgba(232,237,242,0.8);
-  padding:4px 0;padding-left:16px;position:relative;line-height:1.5;
-}
-.card-bullets li::before{content:'→';position:absolute;left:0;color:var(--accent2);font-size:11px;top:5px;}
-.card-metrics{
-  display:flex;gap:10px;flex-wrap:wrap;
-}
-.metric{
-  padding:6px 12px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:4px;
-  font-size:11px;
-}
-.metric-label{color:var(--muted);display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
-.metric-val{font-weight:600;color:var(--text);}
+.result-content{font-size:16px;line-height:1.9;color:rgba(240,244,255,.88);}
+.result-content h2{font-size:26px;font-weight:800;color:#fff;margin:36px 0 16px;padding-bottom:12px;border-bottom:1px solid var(--glass-border);}
+.result-content h3{font-size:20px;font-weight:700;color:var(--accent);margin:28px 0 12px;}
+.result-content strong{color:#fff;font-weight:700;}
+.result-content p{margin-bottom:14px;}
+.result-content hr{border:none;border-top:1px solid var(--glass-border);margin:28px 0;}
+.result-content ul,.result-content ol{padding-left:24px;margin-bottom:14px;}
+.result-content li{margin-bottom:6px;}
 
-/* ── SCORING TABLE ───────────────────────────── */
-.scoring-wrap{margin-bottom:40px;}
-.scoring-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;}
-.scoring-item{
-  background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;
-}
-.scoring-crit{font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
-.scoring-val{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--accent);}
-.scoring-max{font-size:10px;color:var(--border);}
-.scoring-bar-bg{height:3px;background:var(--border);border-radius:2px;margin-top:8px;}
-.scoring-bar-fill{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;}
+/* URL Buttons */
+.result-content a.url-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;background:rgba(79,163,255,0.1);border:1px solid rgba(79,163,255,0.28);color:var(--accent);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;margin:4px 2px;backdrop-filter:var(--blur-sm);}
+.result-content a.url-btn:hover{background:rgba(79,163,255,0.2);border-color:rgba(79,163,255,0.5);transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,163,255,0.2);}
+.result-content a.url-btn::before{content:'🔗';font-size:13px;}
 
-/* ── RANKING ────────────────────────────────── */
-.ranking-list{list-style:none;display:grid;gap:8px;margin-bottom:40px;}
-.ranking-item{
-  display:flex;align-items:center;gap:16px;
-  padding:14px 20px;
-  background:var(--card);border:1px solid var(--border);border-radius:8px;
-}
-.ranking-pos{
-  font-family:'Bebas Neue',sans-serif;font-size:24px;
-  width:32px;text-align:center;flex-shrink:0;
-}
-.ranking-pos.p1{color:var(--gold);}
-.ranking-pos.p2{color:#C0C0C0;}
-.ranking-pos.p3{color:#CD7F32;}
-.ranking-name{flex:1;font-size:14px;font-weight:500;}
-.ranking-score{font-weight:700;font-size:14px;}
+/* Tables */
+.result-content .table-wrap{overflow-x:auto;margin:20px 0;border-radius:16px;border:1px solid var(--glass-border);}
+.result-content table{width:100%;border-collapse:collapse;font-size:14px;}
+.result-content thead tr{background:linear-gradient(135deg,rgba(79,163,255,0.18),rgba(167,139,250,0.18));}
+.result-content th{padding:14px 16px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;border-bottom:1px solid var(--glass-border);}
+.result-content td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(240,244,255,.85);vertical-align:middle;}
+.result-content tbody tr:hover{background:rgba(79,163,255,0.04);}
+.result-content tbody tr:last-child td{border-bottom:none;}
 
-/* ── ACTION PLAN ────────────────────────────── */
-.action-plan{
-  background:linear-gradient(135deg,rgba(0,229,255,0.05),rgba(255,107,53,0.05));
-  border:1px solid rgba(0,229,255,0.2);
-  border-radius:12px;padding:32px;
-}
-.action-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:24px;letter-spacing:2px;color:#fff;margin-bottom:20px;
-}
-.action-title span{color:var(--gold);}
-.action-steps{display:grid;gap:16px;}
-.action-step{
-  display:flex;gap:16px;align-items:flex-start;
-  padding:16px;background:rgba(0,0,0,0.2);border-radius:8px;
-}
-.step-num{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  display:flex;align-items:center;justify-content:center;
-  font-weight:700;font-size:13px;color:#080C10;flex-shrink:0;
-}
-.step-content{}
-.step-title{font-weight:600;font-size:14px;margin-bottom:4px;}
-.step-desc{font-size:13px;color:rgba(232,237,242,0.7);line-height:1.5;}
+/* Charts */
+.charts-section{margin-top:48px;}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:28px;}
+.chart-card{padding:28px;border-radius:var(--radius);background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:var(--blur);}
+.chart-title{font-size:16px;font-weight:700;color:#fff;margin-bottom:20px;}
+.chart-title span{color:var(--accent);}
+canvas{max-height:280px;}
 
-/* ── RESULT CONTENT ─────────────────────────── */
-.result-content{
-  font-size:14px;line-height:1.8;color:rgba(232,237,242,0.85);
-  white-space:pre-wrap;word-break:break-word;
-}
-.result-content h2{
-  font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;
-  color:#fff;margin:28px 0 12px;
-}
-.result-content h3{font-size:16px;font-weight:600;color:var(--accent);margin:20px 0 8px;}
-.result-content strong{color:#fff;font-weight:600;}
-.result-content table{margin:16px 0;}
-.result-content a{color:var(--accent);}
-.result-content hr{border:none;border-top:1px solid var(--border);margin:24px 0;}
+.error-block{padding:28px;background:rgba(248,113,113,0.07);border:1px solid rgba(248,113,113,0.22);border-radius:16px;color:var(--red);font-size:16px;}
 
-/* ── ERROR ──────────────────────────────────── */
-.error-block{
-  padding:24px;background:rgba(239,71,111,0.08);
-  border:1px solid rgba(239,71,111,0.2);border-radius:8px;
-  color:var(--red);font-size:14px;
-}
-
-/* ── RESPONSIVE ─────────────────────────────── */
-@media(max-width:600px){
-  main{padding:24px 16px 60px;}
-  .bloque-tabs{flex-direction:column;}
-  .macro-grid{grid-template-columns:repeat(2,1fr);}
+@media(max-width:768px){
+  header{padding:18px 20px;}
+  main{padding:24px 18px 80px;}
+  .bloque-tabs{grid-template-columns:1fr;}
+  .charts-grid{grid-template-columns:1fr;}
+  .generate-wrap{flex-direction:column;}
+  .btn-generate,.btn-new-search{width:100%;justify-content:center;text-align:center;}
 }
 </style>
 </head>
 <body>
 
+<div class="bg-orbs">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-icon">🔭</div>
+    <div class="login-app-name">Brand Scaling<br>Product Finder</div>
+    <div class="login-subtitle">Detecta productos ganadores para e-commerce con inteligencia artificial. Análisis DTC, scoring completo y plan de acción.</div>
+    <div class="login-badge">🔒 Plataforma privada · Solo miembros del programa</div>
+    <input class="login-field" id="loginUser" type="text" placeholder="Usuario" autocomplete="username"/>
+    <input class="login-field" id="loginPass" type="password" placeholder="Contraseña" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    <button class="login-btn" onclick="doLogin()">Ingresar a la plataforma →</button>
+    <div class="login-error" id="loginError">⚠️ Usuario o contraseña incorrectos. Intenta de nuevo.</div>
+    <div class="login-creator">Creado por <strong>Juan Camilo Villada</strong> · Wifi Money Group</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
 <header>
   <div class="header-inner">
-    <div class="logo-block">
-      <span class="logo-tag">Wifi Money Group · By Juan Camilo Villada</span>
-      <h1>BRAND SCALING<br><span>PRODUCT FINDER</span></h1>
-      <div class="by-line">Powered by Claude AI · Investigador Senior DTC</div>
+    <div class="logo-wrap">
+      <div class="logo-icon">🔭</div>
+      <div>
+        <div class="logo-name">Brand Scaling · Product Finder</div>
+        <div class="logo-sub">Powered by Claude AI · Investigador Senior DTC</div>
+      </div>
     </div>
-    <div class="status-badge">
-      <span class="status-dot"></span>
-      Sistema activo
+    <div class="header-right">
+      <div class="status-pill"><span class="status-dot"></span>Sistema activo</div>
+      <button class="logout-btn" onclick="doLogout()">Salir</button>
     </div>
   </div>
 </header>
 
 <main>
-
-  <!-- SELECTOR -->
-  <div class="selector-section">
-    <div class="section-label">Paso 1 — Elige tu bloque</div>
-
-    <div class="bloque-tabs">
-      <div class="bloque-tab active" data-bloque="A" onclick="selectBloque('A')">
-        <div class="tab-label">Bloque A</div>
-        <div class="tab-title">🧬 Consumibles</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Suplementos · Wellness · Alto LTV</div>
-      </div>
-      <div class="bloque-tab" data-bloque="B" onclick="selectBloque('B')">
-        <div class="tab-label">Bloque B</div>
-        <div class="tab-title">📦 No Consumibles</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:4px;">Marca física · Fabricable en China</div>
+  <div id="selectorSection">
+    <div style="margin-bottom:40px;">
+      <div class="section-label">Paso 1 — Elige tu bloque</div>
+      <div class="bloque-tabs">
+        <div class="bloque-tab active" data-bloque="A" onclick="selectBloque('A')">
+          <div class="tab-label">Bloque A</div>
+          <div class="tab-title">🧬 Consumibles</div>
+          <div class="tab-desc">Suplementos · Wellness · Alto LTV</div>
+        </div>
+        <div class="bloque-tab" data-bloque="B" onclick="selectBloque('B')">
+          <div class="tab-label">Bloque B</div>
+          <div class="tab-title">📦 No Consumibles</div>
+          <div class="tab-desc">Marca física · Fabricable en China</div>
+        </div>
       </div>
     </div>
 
-    <div class="section-label">Paso 2 — Elige la categoría macro</div>
-    <div class="macro-grid" id="macroGrid"></div>
+    <div style="margin-bottom:36px;">
+      <div class="section-label">Paso 2 — Categoría macro</div>
+      <div class="macro-grid" id="macroGrid"></div>
+    </div>
 
-    <div class="sub-section" id="subSection" style="display:none;">
-      <div class="section-label">Paso 3 — Elige la subcategoría</div>
-      <div class="sub-title">Subcategorías disponibles</div>
+    <div id="subSection" style="display:none;margin-bottom:32px;">
+      <div class="section-label">Paso 3 — Subcategoría</div>
       <div class="sub-grid" id="subGrid"></div>
     </div>
 
@@ -435,276 +250,277 @@ td a:hover{text-decoration:underline;}
     </div>
 
     <div class="generate-wrap">
-      <button class="btn-generate" id="btnGenerate" onclick="generate()" disabled>
-        ⚡ Analizar Productos Ganadores
-      </button>
+      <button class="btn-generate" id="btnGenerate" onclick="generate()" disabled>⚡ Analizar Productos Ganadores</button>
     </div>
   </div>
 
-  <!-- RESULTS -->
   <div id="results"></div>
-
 </main>
+</div>
 
 <script>
+const CREDS = { user:'wifimoneylomejor', pass:'solowinners' };
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if(u===CREDS.user && p===CREDS.pass) {
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    renderMacro();
+  } else {
+    const e = document.getElementById('loginError');
+    e.style.display='block';
+    setTimeout(()=>e.style.display='none',3500);
+  }
+}
+function doLogout() {
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+  document.getElementById('results').innerHTML='';
+  chartInstances.forEach(c=>c.destroy()); chartInstances=[];
+}
+
 const DATA = {
-  A: {
-    "1": {
-      name: "Digestión, metabolismo y detox",
-      subs: ["Inflamación abdominal","Digestión lenta","Microbiota intestinal","Antojos de azúcar","Retención de líquidos","Salud hepática","Detox corporal","Digestión nocturna"]
-    },
-    "2": {
-      name: "Energía, estrés y sueño",
-      subs: ["Energía diaria","Fatiga crónica","Cortisol elevado","Estrés emocional","Ansiedad leve","Sueño profundo adulto","Regulación del sistema nervioso","Recuperación energética"]
-    },
-    "3": {
-      name: "Belleza y apariencia física desde el interior",
-      subs: ["Antienvejecimiento de piel","Cabello fuerte y crecimiento","Uñas saludables","Piel corporal uniforme","Luminosidad facial","Hidratación profunda"]
-    },
-    "4": {
-      name: "Peso, apetito y composición corporal",
-      subs: ["Control del hambre","Antojos emocionales","Metabolismo lento","Grasa abdominal","Saciedad prolongada","Control de azúcar"]
-    },
-    "5": {
-      name: "Hormonal y salud sexual",
-      subs: ["Balance hormonal femenino","Pre-menopausia","Libido femenina","Vitalidad masculina","Testosterona percibida","Salud tiroidea percibida"]
-    },
-    "6": {
-      name: "Cognición, enfoque y sistema nervioso",
-      subs: ["Concentración adulta","Memoria +40","Enfoque escolar infantil","Regulación emocional adolescente","Fatiga visual digital"]
-    },
-    "7": {
-      name: "Dolor, inflamación y movilidad",
-      subs: ["Dolor articular","Inflamación sistémica","Recuperación muscular","Salud ósea","Movilidad +35"]
-    },
-    "8": {
-      name: "Salud preventiva y longevidad",
-      subs: ["Sistema inmune","Salud cardiovascular","Circulación","Salud respiratoria","Longevidad celular","Bienestar integral diario"]
-    },
-    "9": {
-      name: "Bienestar infantil y familiar",
-      subs: ["Sueño infantil","Digestión infantil","Calma emocional en niños","Enfoque escolar","Inmunidad infantil","Bienestar respiratorio","Rutinas nocturnas familiares"]
-    },
-    "10": {
-      name: "Bienestar femenino integral",
-      subs: ["Energía femenina","Ciclo menstrual","Equilibrio emocional","Piel adulta","Bienestar íntimo","Longevidad femenina"]
-    }
+  A:{
+    "1":{name:"Digestión, metabolismo y detox",subs:["Inflamación abdominal","Digestión lenta","Microbiota intestinal","Antojos de azúcar","Retención de líquidos","Salud hepática","Detox corporal","Digestión nocturna"]},
+    "2":{name:"Energía, estrés y sueño",subs:["Energía diaria","Fatiga crónica","Cortisol elevado","Estrés emocional","Ansiedad leve","Sueño profundo adulto","Regulación del sistema nervioso","Recuperación energética"]},
+    "3":{name:"Belleza y apariencia física desde el interior",subs:["Antienvejecimiento de piel","Cabello fuerte y crecimiento","Uñas saludables","Piel corporal uniforme","Luminosidad facial","Hidratación profunda"]},
+    "4":{name:"Peso, apetito y composición corporal",subs:["Control del hambre","Antojos emocionales","Metabolismo lento","Grasa abdominal","Saciedad prolongada","Control de azúcar"]},
+    "5":{name:"Hormonal y salud sexual",subs:["Balance hormonal femenino","Pre-menopausia","Libido femenina","Vitalidad masculina","Testosterona percibida","Salud tiroidea percibida"]},
+    "6":{name:"Cognición, enfoque y sistema nervioso",subs:["Concentración adulta","Memoria +40","Enfoque escolar infantil","Regulación emocional adolescente","Fatiga visual digital"]},
+    "7":{name:"Dolor, inflamación y movilidad",subs:["Dolor articular","Inflamación sistémica","Recuperación muscular","Salud ósea","Movilidad +35"]},
+    "8":{name:"Salud preventiva y longevidad",subs:["Sistema inmune","Salud cardiovascular","Circulación","Salud respiratoria","Longevidad celular","Bienestar integral diario"]},
+    "9":{name:"Bienestar infantil y familiar",subs:["Sueño infantil","Digestión infantil","Calma emocional en niños","Enfoque escolar","Inmunidad infantil","Bienestar respiratorio","Rutinas nocturnas familiares"]},
+    "10":{name:"Bienestar femenino integral",subs:["Energía femenina","Ciclo menstrual","Equilibrio emocional","Piel adulta","Bienestar íntimo","Longevidad femenina"]}
   },
-  B: {
-    "1": {
-      name: "Tecnología estética y dispositivos para la piel",
-      subs: ["IPL / depilación en casa","Microcorriente / lifting","LED facial / fototerapia","Radiofrecuencia en casa","Limpieza sónica / dispositivos faciales"]
-    },
-    "2": {
-      name: "Dispositivos de bienestar y biohacking en el hogar",
-      subs: ["Luz roja (red light)","Recuperación muscular en casa","Herramientas de respiración/relajación","Dispositivos de sueño (no wearables médicos)","Termoterapia / crioterapia doméstica"]
-    },
-    "3": {
-      name: "Equipamiento fitness en casa y recuperación física",
-      subs: ["Pistolas de masaje","Bandas y movilidad","Entrenamiento funcional en casa","Soportes y accesorios deportivos","Recuperación post-entreno"]
-    },
-    "4": {
-      name: "Descanso, ergonomía y alivio del dolor",
-      subs: ["Almohadas ergonómicas","Soportes lumbares","Cojines ortopédicos","Correctores posturales","Ergonomía para oficina"]
-    },
-    "5": {
-      name: "Estilo de vida premium para mascotas",
-      subs: ["Camas ortopédicas","Bebederos automáticos","Grooming premium","Juguetes inteligentes","Accesorios de viaje para mascotas"]
-    },
-    "6": {
-      name: "Hogar saludable inteligente y ambiente",
-      subs: ["Humidificadores premium","Purificadores / filtros","Iluminación ambiental/circadiana","Aromatización tecnológica (difusores)","Confort climático doméstico"]
-    },
-    "7": {
-      name: "Desarrollo infantil y equipamiento para crianza",
-      subs: ["Estimulación temprana","Aprendizaje sensorial","Seguridad en el hogar","Sueño infantil (no consumibles)","Organización infantil funcional"]
-    },
-    "8": {
-      name: "Viaje, movilidad y accesorios de uso diario",
-      subs: ["Mochilas funcionales","Organización de viaje","Botellas inteligentes","Accesorios para movilidad diaria","EDC (everyday carry) premium"]
-    },
-    "9": {
-      name: "Tecnología de cuidado personal y grooming",
-      subs: ["Cortadoras premium","Depilación corporal","Spa corporal en casa","Cuidado íntimo tech (no médico)","Higiene avanzada personal"]
-    },
-    "10": {
-      name: "Cocina funcional y herramientas para vida saludable",
-      subs: ["Licuadoras portátiles premium","Meal prep inteligente","Hidratación funcional (botellas)","Cocina saludable rápida","Organización de cocina premium"]
-    },
-    "11": {
-      name: "Moda funcional y prendas de rendimiento",
-      subs: ["Compresión deportiva","Correctores/postura (prendas)","Control térmico","Recovery wear","Ropa outdoor funcional"]
-    },
-    "12": {
-      name: "Accesorios premium de estilo de vida",
-      subs: ["Gafas (no médicas)","Relojes lifestyle","Bolsos funcionales","Joyería minimalista","Accesorios EDC premium"]
-    }
+  B:{
+    "1":{name:"Tecnología estética y dispositivos para la piel",subs:["IPL / depilación en casa","Microcorriente / lifting","LED facial / fototerapia","Radiofrecuencia en casa","Limpieza sónica / dispositivos faciales"]},
+    "2":{name:"Dispositivos de bienestar y biohacking en el hogar",subs:["Luz roja (red light)","Recuperación muscular en casa","Herramientas de respiración/relajación","Dispositivos de sueño (no wearables médicos)","Termoterapia / crioterapia doméstica"]},
+    "3":{name:"Equipamiento fitness en casa y recuperación física",subs:["Pistolas de masaje","Bandas y movilidad","Entrenamiento funcional en casa","Soportes y accesorios deportivos","Recuperación post-entreno"]},
+    "4":{name:"Descanso, ergonomía y alivio del dolor",subs:["Almohadas ergonómicas","Soportes lumbares","Cojines ortopédicos","Correctores posturales","Ergonomía para oficina"]},
+    "5":{name:"Estilo de vida premium para mascotas",subs:["Camas ortopédicas","Bebederos automáticos","Grooming premium","Juguetes inteligentes","Accesorios de viaje para mascotas"]},
+    "6":{name:"Hogar saludable inteligente y ambiente",subs:["Humidificadores premium","Purificadores / filtros","Iluminación ambiental/circadiana","Aromatización tecnológica (difusores)","Confort climático doméstico"]},
+    "7":{name:"Desarrollo infantil y equipamiento para crianza",subs:["Estimulación temprana","Aprendizaje sensorial","Seguridad en el hogar","Sueño infantil (no consumibles)","Organización infantil funcional"]},
+    "8":{name:"Viaje, movilidad y accesorios de uso diario",subs:["Mochilas funcionales","Organización de viaje","Botellas inteligentes","Accesorios para movilidad diaria","EDC (everyday carry) premium"]},
+    "9":{name:"Tecnología de cuidado personal y grooming",subs:["Cortadoras premium","Depilación corporal","Spa corporal en casa","Cuidado íntimo tech (no médico)","Higiene avanzada personal"]},
+    "10":{name:"Cocina funcional y herramientas para vida saludable",subs:["Licuadoras portátiles premium","Meal prep inteligente","Hidratación funcional (botellas)","Cocina saludable rápida","Organización de cocina premium"]},
+    "11":{name:"Moda funcional y prendas de rendimiento",subs:["Compresión deportiva","Correctores/postura (prendas)","Control térmico","Recovery wear","Ropa outdoor funcional"]},
+    "12":{name:"Accesorios premium de estilo de vida",subs:["Gafas (no médicas)","Relojes lifestyle","Bolsos funcionales","Joyería minimalista","Accesorios EDC premium"]}
   }
 };
 
-let state = { bloque: 'A', macro: null, sub: null };
+let state={bloque:'A',macro:null,sub:null};
+let chartInstances=[];
 
-function selectBloque(b) {
-  state = { bloque: b, macro: null, sub: null };
-  document.querySelectorAll('.bloque-tab').forEach(t => t.classList.remove('active'));
+function selectBloque(b){
+  state={bloque:b,macro:null,sub:null};
+  document.querySelectorAll('.bloque-tab').forEach(t=>t.classList.remove('active'));
   document.querySelector(`[data-bloque="${b}"]`).classList.add('active');
   renderMacro();
-  document.getElementById('subSection').style.display = 'none';
-  document.getElementById('selectionBar').style.display = 'none';
-  document.getElementById('btnGenerate').disabled = true;
+  document.getElementById('subSection').style.display='none';
+  document.getElementById('selectionBar').style.display='none';
+  document.getElementById('btnGenerate').disabled=true;
 }
 
-function renderMacro() {
-  const grid = document.getElementById('macroGrid');
-  const macros = DATA[state.bloque];
-  grid.innerHTML = Object.entries(macros).map(([num, m]) =>
+function renderMacro(){
+  document.getElementById('macroGrid').innerHTML=Object.entries(DATA[state.bloque]).map(([num,m])=>
     `<div class="macro-card" data-macro="${num}" onclick="selectMacro('${num}')">
       <div class="macro-num">Macro ${num}</div>
       <div class="macro-name">${m.name}</div>
-    </div>`
-  ).join('');
+    </div>`).join('');
 }
 
-function selectMacro(num) {
-  state.macro = num;
-  state.sub = null;
-  document.querySelectorAll('.macro-card').forEach(c => c.classList.remove('active'));
+function selectMacro(num){
+  state.macro=num;state.sub=null;
+  document.querySelectorAll('.macro-card').forEach(c=>c.classList.remove('active'));
   document.querySelector(`[data-macro="${num}"]`).classList.add('active');
-  renderSubs(num);
-  document.getElementById('selectionBar').style.display = 'none';
-  document.getElementById('btnGenerate').disabled = true;
+  document.getElementById('subGrid').innerHTML=DATA[state.bloque][num].subs.map(s=>
+    `<div class="sub-chip" onclick="selectSub(this,'${s.replace(/'/g,"&#39;")}')">${s}</div>`).join('');
+  document.getElementById('subSection').style.display='block';
+  document.getElementById('selectionBar').style.display='none';
+  document.getElementById('btnGenerate').disabled=true;
 }
 
-function renderSubs(num) {
-  const subs = DATA[state.bloque][num].subs;
-  const grid = document.getElementById('subGrid');
-  grid.innerHTML = subs.map(s =>
-    `<div class="sub-chip" data-sub="${s}" onclick="selectSub('${s}')">${s}</div>`
-  ).join('');
-  document.getElementById('subSection').style.display = 'block';
+function selectSub(el,sub){
+  state.sub=sub;
+  document.querySelectorAll('.sub-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('selBloqueTag').textContent=`Bloque ${state.bloque}`;
+  document.getElementById('selMacroTag').textContent=DATA[state.bloque][state.macro].name;
+  document.getElementById('selSubTag').textContent=sub;
+  document.getElementById('selectionBar').style.display='flex';
+  document.getElementById('btnGenerate').disabled=false;
 }
 
-function selectSub(sub) {
-  state.sub = sub;
-  document.querySelectorAll('.sub-chip').forEach(c => c.classList.remove('active'));
-  document.querySelector(`[data-sub="${sub}"]`).classList.add('active');
-  // Update bar
-  const bar = document.getElementById('selectionBar');
-  document.getElementById('selBloqueTag').textContent = `Bloque ${state.bloque}`;
-  document.getElementById('selMacroTag').textContent = DATA[state.bloque][state.macro].name;
-  document.getElementById('selSubTag').textContent = sub;
-  bar.style.display = 'flex';
-  document.getElementById('btnGenerate').disabled = false;
-}
+async function generate(){
+  const btn=document.getElementById('btnGenerate');
+  btn.disabled=true;btn.textContent='⏳ Analizando...';
+  chartInstances.forEach(c=>c.destroy());chartInstances=[];
 
-async function generate() {
-  const btn = document.getElementById('btnGenerate');
-  btn.disabled = true;
-  btn.textContent = '⏳ Analizando...';
+  const resultsDiv=document.getElementById('results');
+  resultsDiv.innerHTML=`<div class="loading-block glass-card" style="padding:90px 32px;">
+    <div class="loading-ring"></div>
+    <div class="loading-text">Investigando productos ganadores</div>
+    <div class="loading-sub" style="margin-top:8px;">Bloque ${state.bloque} · ${DATA[state.bloque][state.macro].name} · ${state.sub}</div>
+  </div>`;
+  resultsDiv.scrollIntoView({behavior:'smooth',block:'start'});
 
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = `
-    <div class="loading-block">
-      <div class="loading-spinner"></div>
-      <div class="loading-text">Investigando productos ganadores</div>
-      <div class="loading-sub">Bloque ${state.bloque} · ${DATA[state.bloque][state.macro].name} · ${state.sub}</div>
-    </div>`;
+  const sys=`Eres un Investigador Senior DTC especializado en detectar productos ganadores para e-commerce.
+Trabajas bajo: Brand Scaling – WiFi Money | By Juan Camilo Villada.
 
-  resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+REGLAS:
+- Solo URLs de marcas/marketplaces reconocidos. NUNCA inventes links.
+- Formato URL OBLIGATORIO para cada producto: [Visitar página](https://url-real.com)
+- Solo productos con ángulo DTC claro.
+- AL FINAL de tu respuesta incluye este bloque JSON exacto (para gráficos automáticos):
+\`\`\`json
+{"productos":[{"nombre":"Nombre corto max 20 chars","score":85,"recompra":22,"diferenciacion":21,"ads":17,"ltv":18,"saturacion":7}]}
+\`\`\`
 
-  const systemPrompt = `Eres un Investigador Senior DTC especializado en detectar productos ganadores para comercio electrónico (DTC/Shopify/Amazon) para:
-- Consumibles (suplementos / bienestar) con alto LTV
-- No consumibles fabricables en China (marca física escalable)
+SCORING (0-100): Recompra→0-25 | Diferenciación→0-25 | Ads→0-20 | LTV→0-20 | Saturación→0-10
+Clasificación: 🟢 75-100 Ganador | 🟡 50-74 Testeable | 🔴 0-49 Débil
 
-Trabajas bajo: Brand Scaling – WiFi Money | By Juan Camilo Villada
+FORMATO DE SALIDA:
+1. Tabla comparativa (columnas: #, Producto, URL botón, Recompra, Diferenciación, Ads, LTV, Saturación, Score, Clasificación)
+2. Análisis por producto con [Visitar página](url) para cada uno
+3. Ranking 1-10
+4. Top 3 + Plan de acción 3 pasos
+5. Bloque JSON (OBLIGATORIO al final)
 
-Tu misión es: encontrar 10 productos ganadores por subcategoría, justificar con scoring + clasificación estratégica, y cerrar con ranking + plan de acción.
+Responde en español con markdown.`;
 
-REGLAS CRÍTICAS:
-- Solo incluye URLs de marcas/marketplaces conocidos (Amazon, marcas DTC reconocidas). Nunca inventes links.
-- Formato URL: "URL (referencia pública): …"
-- FILTRO ANTI-COMMODITY: Solo productos con ángulo DTC claro, bundle, suscripción o línea escalable.
-- Para cada producto incluye scoring numérico 0-100:
-  * Recompra/repetición → 0-25
-  * Diferenciación DTC → 0-25
-  * Facilidad de escalar en ads → 0-20
-  * Potencial de marca/LTV → 0-20
-  * Saturación saludable → 0-10
-- Clasificación: 🟢 75-100 Ganador escalable | 🟡 50-74 Testeable | 🔴 0-49 Débil
+  const msg=`Bloque ${state.bloque} + ${DATA[state.bloque][state.macro].name} + "${state.sub}". Entrega 10 productos ganadores completos con JSON al final.`;
 
-FORMATO DE SALIDA OBLIGATORIO:
-1. Tabla comparativa con columnas: #, Producto, Recompra, Diferenciación, Ads, LTV, Saturación, Score Total, Clasificación
-2. Análisis detallado de cada producto (marca referente, URL, por qué gana, recompra/LTV, saturación LATAM)
-3. Ranking final 1-10
-4. Top 3 + Plan de acción en 3 pasos
-
-Responde en español. Formato markdown rico con emojis para mejor lectura.`;
-
-  const userMsg = `Analiza la subcategoría: Bloque ${state.bloque} + Macro ${state.macro} (${DATA[state.bloque][state.macro].name}) + Subcategoría: "${state.sub}"
-
-Entrega exactamente 10 productos ganadores con todo el formato obligatorio: tabla comparativa, análisis por producto, ranking 1-10 y top 3 con plan de acción.`;
-
-  try {
-    const resp = await fetch("/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 8000,
-        system: systemPrompt,
-        messages: [{ role: "user", content: userMsg }]
-      })
-    });
-
-    const data = await resp.json();
-    if (data.error) throw new Error(data.error.message);
-
-    const text = data.content?.[0]?.text || "";
-    renderResults(text);
-
-  } catch (err) {
-    resultsDiv.innerHTML = `<div class="error-block">⚠️ Error: ${err.message}<br><br>Verifica tu conexión e intenta nuevamente.</div>`;
+  try{
+    const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({model:"claude-sonnet-4-6",max_tokens:8000,system:sys,messages:[{role:"user",content:msg}]})});
+    const d=await r.json();
+    if(d.error) throw new Error(d.error.message||JSON.stringify(d.error));
+    renderResults(d.content?.[0]?.text||"");
+  }catch(err){
+    resultsDiv.innerHTML=`<div class="error-block">⚠️ Error: ${err.message}</div>`;
   }
-
-  btn.disabled = false;
-  btn.textContent = '⚡ Analizar Productos Ganadores';
+  btn.disabled=false;btn.textContent='⚡ Analizar Productos Ganadores';
 }
 
-function renderResults(markdown) {
-  const resultsDiv = document.getElementById('results');
+function parseChartData(text){
+  try{const m=text.match(/```json\s*([\s\S]*?)```/);return m?JSON.parse(m[1]):null;}catch{return null;}
+}
 
-  // Convert markdown to styled HTML
-  let html = markdown
-    .replace(/^### (.+)$/gm, '<h3>$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2>$1</h2>')
-    .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/\[(.+?)\]\((https?:\/\/.+?)\)/g, '<a href="$2" target="_blank" rel="noopener">$1 ↗</a>')
-    .replace(/^---$/gm, '<hr>')
-    .replace(/🟢/g, '<span style="color:var(--green)">🟢</span>')
-    .replace(/🟡/g, '<span style="color:var(--gold)">🟡</span>')
-    .replace(/🔴/g, '<span style="color:var(--red)">🔴</span>');
+function buildCharts(data){
+  if(!data?.productos) return;
+  const prods=data.productos;
+  const names=prods.map(p=>p.nombre.length>16?p.nombre.slice(0,14)+'…':p.nombre);
+  const scores=prods.map(p=>p.score);
+  const bg=scores.map(s=>s>=75?'rgba(52,211,153,.75)':s>=50?'rgba(251,191,36,.75)':'rgba(248,113,113,.75)');
+  const bd=scores.map(s=>s>=75?'#34d399':s>=50?'#fbbf24':'#f87171');
+  const gc='rgba(255,255,255,0.06)';const tc='rgba(240,244,255,0.5)';
+  const fnt={family:'Plus Jakarta Sans',size:12};
 
-  resultsDiv.innerHTML = `
-    <div class="results-header">
+  const c1=new Chart(document.getElementById('chartBar'),{type:'bar',
+    data:{labels:names,datasets:[{label:'Score',data:scores,backgroundColor:bg,borderColor:bd,borderWidth:1,borderRadius:8}]},
+    options:{plugins:{legend:{display:false}},scales:{x:{ticks:{color:tc,font:fnt},grid:{color:gc}},y:{ticks:{color:tc,font:fnt},grid:{color:gc},min:0,max:100}}}});
+
+  const ganadores=scores.filter(s=>s>=75).length,testeables=scores.filter(s=>s>=50&&s<75).length,debiles=scores.filter(s=>s<50).length;
+  const c2=new Chart(document.getElementById('chartDoughnut'),{type:'doughnut',
+    data:{labels:['🟢 Ganadores','🟡 Testeables','🔴 Débiles'],
+      datasets:[{data:[ganadores,testeables,debiles],backgroundColor:['rgba(52,211,153,.8)','rgba(251,191,36,.8)','rgba(248,113,113,.8)'],borderWidth:2,borderColor:'rgba(255,255,255,0.1)'}]},
+    options:{cutout:'65%',plugins:{legend:{labels:{color:tc,font:fnt}}}}});
+
+  const c3=new Chart(document.getElementById('chartScatter'),{type:'scatter',
+    data:{datasets:[{label:'Productos',data:prods.map(p=>({x:p.recompra,y:p.diferenciacion,label:p.nombre})),backgroundColor:bg,borderColor:bd,pointRadius:9,pointHoverRadius:12}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.label}}},
+      scales:{x:{title:{display:true,text:'Recompra',color:tc,font:fnt},ticks:{color:tc,font:fnt},grid:{color:gc}},
+              y:{title:{display:true,text:'Diferenciación',color:tc,font:fnt},ticks:{color:tc,font:fnt},grid:{color:gc}}}}});
+
+  const c4=new Chart(document.getElementById('chartBubble'),{type:'bubble',
+    data:{datasets:[{label:'Ads vs LTV',data:prods.map(p=>({x:p.ads,y:p.ltv,r:Math.max(6,p.score/10),label:p.nombre})),backgroundColor:bg,borderColor:bd}]},
+    options:{plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`${ctx.raw.label} (Ads:${ctx.raw.x} LTV:${ctx.raw.y})`}}},
+      scales:{x:{title:{display:true,text:'Facilidad Ads',color:tc,font:fnt},ticks:{color:tc,font:fnt},grid:{color:gc}},
+              y:{title:{display:true,text:'Potencial LTV',color:tc,font:fnt},ticks:{color:tc,font:fnt},grid:{color:gc}}}}});
+
+  chartInstances=[c1,c2,c3,c4];
+}
+
+function renderResults(raw){
+  const resultsDiv=document.getElementById('results');
+  const chartData=parseChartData(raw);
+  let text=raw.replace(/```json[\s\S]*?```/g,'').trim();
+
+  // Collect table rows
+  const tableRows=[];
+  let html=text
+    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h2>$1</h2>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^---$/gm,'<hr>')
+    // Links → buttons
+    .replace(/\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener" class="url-btn">$1</a>')
+    // Plain URLs after "URL:" label
+    .replace(/URL[^:]*:\s*(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
+    .replace(/🟢/g,'<span style="color:var(--green)">🟢</span>')
+    .replace(/🟡/g,'<span style="color:var(--gold)">🟡</span>')
+    .replace(/🔴/g,'<span style="color:var(--red)">🔴</span>');
+
+  // Tables
+  const lines=html.split('\n');
+  let inTable=false;let tableHTML='';let result=[];
+  for(let line of lines){
+    if(line.trim().startsWith('|')&&!line.includes('---')){
+      if(!inTable){inTable=true;tableHTML='<div class="table-wrap"><table>';}
+      const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
+      if(!tableRows.length){tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;tableRows.push(1);}
+      else tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+    } else {
+      if(inTable){tableHTML+='</tbody></table></div>';result.push(tableHTML);tableHTML='';inTable=false;tableRows.length=0;}
+      result.push(line);
+    }
+  }
+  if(inTable) result.push(tableHTML+'</tbody></table></div>');
+  html=result.join('\n');
+
+  const chartsHTML=chartData?`
+    <div class="charts-section">
+      <div class="section-label">Visualización de Resultados</div>
+      <div class="charts-grid">
+        <div class="chart-card glass-card"><div class="chart-title">📊 Score Total por <span>Producto</span></div><canvas id="chartBar"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">🎯 Distribución de <span>Clasificación</span></div><canvas id="chartDoughnut"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">🔁 Recompra vs <span>Diferenciación</span></div><canvas id="chartScatter"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">⚡ Potencial <span>Ads vs LTV</span></div><canvas id="chartBubble"></canvas></div>
+      </div>
+    </div>`:'';
+
+  resultsDiv.innerHTML=`
+    <div class="results-top-bar">
       <div>
-        <div class="results-title">RESULTADOS <span>${state.sub}</span></div>
+        <div class="results-title">Resultados: <span>${state.sub}</span></div>
         <div class="results-meta">Bloque ${state.bloque} · ${DATA[state.bloque][state.macro].name} · 10 productos analizados</div>
       </div>
-      <button onclick="document.getElementById('results').innerHTML='';document.getElementById('btnGenerate').disabled=false;" 
-        style="padding:8px 20px;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);cursor:pointer;font-family:Outfit,sans-serif;font-size:12px;">
-        Nueva búsqueda
-      </button>
     </div>
-    <div class="product-card">
+    <div class="glass-card" style="padding:36px 40px;margin-bottom:32px;">
       <div class="result-content">${html}</div>
+    </div>
+    ${chartsHTML}
+    <div class="generate-wrap" style="margin-top:52px;">
+      <button class="btn-new-search" onclick="newSearch()">← Nueva Búsqueda</button>
+      <button class="btn-generate" onclick="generate()">⚡ Analizar de nuevo</button>
     </div>`;
 
-  resultsDiv.scrollIntoView({ behavior: 'smooth' });
+  resultsDiv.scrollIntoView({behavior:'smooth'});
+  if(chartData) setTimeout(()=>buildCharts(chartData),150);
 }
 
-// Init
+function newSearch(){
+  chartInstances.forEach(c=>c.destroy());chartInstances=[];
+  document.getElementById('results').innerHTML='';
+  document.getElementById('selectorSection').scrollIntoView({behavior:'smooth'});
+}
+
 renderMacro();
 </script>
 </body>
