@@ -448,41 +448,68 @@ function buildCharts(data){
 function renderResults(raw){
   const resultsDiv=document.getElementById('results');
   const chartData=parseChartData(raw);
-  let text=raw.replace(/```json[\s\S]*?```/g,'').trim();
 
-  // Collect table rows
-  const tableRows=[];
-  let html=text
+  // Strip ALL code blocks (json, and any remnants)
+  let text=raw
+    .replace(/```[\s\S]*?```/g,'')
+    .replace(/`[^`]+`/g,'')
+    .trim();
+
+  // Parse tables FIRST before any other processing
+  const lines = text.split('\n');
+  const processedLines = [];
+  let inTable = false;
+  let tableHTML = '';
+  let isFirstRow = true;
+
+  for(let i = 0; i < lines.length; i++){
+    const line = lines[i].trim();
+    // Detect separator row (|---|---|) — skip it
+    if(line.startsWith('|') && line.replace(/[\|\-\:\s]/g,'').length === 0){
+      continue;
+    }
+    if(line.startsWith('|')){
+      if(!inTable){
+        inTable=true;
+        isFirstRow=true;
+        tableHTML='<div class="table-wrap"><table>';
+      }
+      const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
+      if(isFirstRow){
+        tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+        isFirstRow=false;
+      } else {
+        tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+      }
+    } else {
+      if(inTable){
+        tableHTML+='</tbody></table></div>';
+        processedLines.push(tableHTML);
+        tableHTML='';inTable=false;isFirstRow=true;
+      }
+      processedLines.push(lines[i]);
+    }
+  }
+  if(inTable) processedLines.push(tableHTML+'</tbody></table></div>');
+  text = processedLines.join('\n');
+
+  // Now apply markdown formatting
+  let html = text
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^# (.+)$/gm,'<h2>$1</h2>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/^---$/gm,'<hr>')
-    // Links → buttons
+    .replace(/^>\s?(.+)$/gm,'<blockquote>$1</blockquote>')
+    // Markdown links → buttons
     .replace(/\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener" class="url-btn">$1</a>')
-    // Plain URLs after "URL:" label
-    .replace(/URL[^:]*:\s*(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
+    // Plain URLs
+    .replace(/(?<!\"|href=\")(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
     .replace(/🟢/g,'<span style="color:var(--green)">🟢</span>')
     .replace(/🟡/g,'<span style="color:var(--gold)">🟡</span>')
     .replace(/🔴/g,'<span style="color:var(--red)">🔴</span>');
 
-  // Tables
-  const lines=html.split('\n');
-  let inTable=false;let tableHTML='';let result=[];
-  for(let line of lines){
-    if(line.trim().startsWith('|')&&!line.includes('---')){
-      if(!inTable){inTable=true;tableHTML='<div class="table-wrap"><table>';}
-      const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
-      if(!tableRows.length){tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;tableRows.push(1);}
-      else tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
-    } else {
-      if(inTable){tableHTML+='</tbody></table></div>';result.push(tableHTML);tableHTML='';inTable=false;tableRows.length=0;}
-      result.push(line);
-    }
-  }
-  if(inTable) result.push(tableHTML+'</tbody></table></div>');
-  html=result.join('\n');
 
   const chartsHTML=chartData?`
     <div class="charts-section">
