@@ -139,9 +139,20 @@ main{max-width:1200px;margin:0 auto;padding:44px 40px 100px;}
 .result-content li{margin-bottom:6px;}
 
 /* URL Buttons */
-.result-content a.url-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:10px;background:rgba(79,163,255,0.1);border:1px solid rgba(79,163,255,0.28);color:var(--accent);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;margin:4px 2px;backdrop-filter:var(--blur-sm);}
+.result-content a.url-btn{display:block;width:fit-content;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;background:rgba(79,163,255,0.1);border:1px solid rgba(79,163,255,0.28);color:var(--accent);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;margin:14px 0;backdrop-filter:var(--blur-sm);}
 .result-content a.url-btn:hover{background:rgba(79,163,255,0.2);border-color:rgba(79,163,255,0.5);transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,163,255,0.2);}
-.result-content a.url-btn::before{content:'🔗';font-size:13px;}
+.result-content a.url-btn::before{content:'🔗 ';font-size:13px;}
+
+/* Product section blocks */
+.result-content .prod-block{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:16px;padding:24px 28px;margin:24px 0;}
+.result-content .prod-meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 16px;}
+.result-content .prod-tag{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
+.result-content .tag-score{background:rgba(52,211,153,0.12);color:var(--green);}
+.result-content .tag-brand{background:rgba(79,163,255,0.12);color:var(--accent);}
+.result-content blockquote{border-left:3px solid var(--accent2);padding:10px 18px;background:rgba(167,139,250,0.07);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:rgba(240,244,255,0.75);}
+
+/* Section dividers */
+.result-content .section-divider{height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:32px 0;opacity:0.3;}
 
 /* Tables */
 .result-content .table-wrap{overflow-x:auto;margin:20px 0;border-radius:16px;border:1px solid var(--glass-border);}
@@ -183,7 +194,14 @@ canvas{max-height:280px;}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-icon">🔭</div>
+    <div class="login-icon">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 32c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" fill="#00ff88"/>
+        <path d="M20 22c3.314 0 6.312 1.343 8.485 3.515l2.829-2.829C28.142 19.556 24.257 18 20 18s-8.142 1.556-11.314 4.686l2.829 2.829C13.688 23.343 16.686 22 20 22z" fill="#00ff88" opacity="0.8"/>
+        <path d="M20 14c6.627 0 12.627 2.686 16.971 7.029l2.829-2.829C34.899 13.3 27.85 10 20 10S5.101 13.3.2 18.2l2.829 2.829C7.373 16.686 13.373 14 20 14z" fill="#00ff88" opacity="0.5"/>
+        <path d="M20 6C9.507 6 .1 10.373-5.657 17.515l2.829 2.829C3.686 14.03 11.373 10 20 10s16.314 4.03 22.828 10.344l2.829-2.829C39.9 10.373 30.493 6 20 6z" fill="#00ff88" opacity="0.25"/>
+      </svg>
+    </div>
     <div class="login-app-name">Brand Scaling<br>Product Finder</div>
     <div class="login-subtitle">Detecta productos ganadores para e-commerce con inteligencia artificial. Análisis DTC, scoring completo y plan de acción.</div>
     <div class="login-badge">🔒 Plataforma privada · Solo miembros del programa</div>
@@ -200,10 +218,16 @@ canvas{max-height:280px;}
 <header>
   <div class="header-inner">
     <div class="logo-wrap">
-      <div class="logo-icon">🔭</div>
+      <div class="logo-icon">
+        <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 32c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" fill="#00ff88"/>
+          <path d="M20 22c3.314 0 6.312 1.343 8.485 3.515l2.829-2.829C28.142 19.556 24.257 18 20 18s-8.142 1.556-11.314 4.686l2.829 2.829C13.688 23.343 16.686 22 20 22z" fill="#00ff88" opacity="0.8"/>
+          <path d="M20 14c6.627 0 12.627 2.686 16.971 7.029l2.829-2.829C34.899 13.3 27.85 10 20 10S5.101 13.3.2 18.2l2.829 2.829C7.373 16.686 13.373 14 20 14z" fill="#00ff88" opacity="0.55"/>
+        </svg>
+      </div>
       <div>
         <div class="logo-name">Brand Scaling · Product Finder</div>
-        <div class="logo-sub">Powered by Claude AI · Investigador Senior DTC</div>
+        <div class="logo-sub">By Juan Camilo Villada · Wifi Money Group</div>
       </div>
     </div>
     <div class="header-right">
@@ -368,31 +392,75 @@ async function generate(){
   </div>`;
   resultsDiv.scrollIntoView({behavior:'smooth',block:'start'});
 
-  const sys=`Eres un Investigador Senior DTC especializado en detectar productos ganadores para e-commerce.
+  const sys=`Eres un Estratega Senior de Marketing DTC especializado en lanzar y escalar marcas de e-commerce en LATAM y USA.
 Trabajas bajo: Brand Scaling – WiFi Money | By Juan Camilo Villada.
 
-REGLAS:
-- Solo URLs de marcas/marketplaces reconocidos. NUNCA inventes links.
-- Formato URL OBLIGATORIO para cada producto: [Visitar página](https://url-real.com)
-- Solo productos con ángulo DTC claro.
-- AL FINAL de tu respuesta incluye este bloque JSON exacto (para gráficos automáticos):
+REGLAS CRÍTICAS:
+- Solo URLs reales de marcas/marketplaces conocidos. NUNCA inventes links.
+- Los links [Visitar página](url) van ÚNICAMENTE en el análisis profundo de cada producto, NUNCA en la tabla comparativa.
+- Solo productos escalables en paid media con ángulo DTC claro.
+- AL FINAL incluye SOLO este bloque JSON:
 \`\`\`json
-{"productos":[{"nombre":"Nombre corto max 20 chars","score":85,"recompra":22,"diferenciacion":21,"ads":17,"ltv":18,"saturacion":7}]}
+{"productos":[{"nombre":"Nombre corto max 18 chars","score":85,"recompra":22,"diferenciacion":21,"ads":17,"ltv":18,"saturacion":7}]}
 \`\`\`
 
-SCORING (0-100): Recompra→0-25 | Diferenciación→0-25 | Ads→0-20 | LTV→0-20 | Saturación→0-10
-Clasificación: 🟢 75-100 Ganador | 🟡 50-74 Testeable | 🔴 0-49 Débil
+SCORING (0-100): Recompra→0-25 | Diferenciación DTC→0-25 | Escalabilidad Ads→0-20 | Potencial LTV→0-20 | Saturación saludable→0-10
+Clasificación: 🟢 75-100 Ganador escalable | 🟡 50-74 Testeable | 🔴 0-49 Débil
 
-FORMATO DE SALIDA:
-1. Tabla comparativa (columnas: #, Producto, URL botón, Recompra, Diferenciación, Ads, LTV, Saturación, Score, Clasificación)
-2. Análisis por producto con [Visitar página](url) para cada uno
-3. Ranking 1-10
-4. Top 3 + Plan de acción 3 pasos
-5. Bloque JSON (OBLIGATORIO al final)
+═══════════════════════════════════
+FORMATO DE SALIDA OBLIGATORIO
+═══════════════════════════════════
 
-Responde en español con markdown.`;
+## 📊 TABLA COMPARATIVA
 
-  const msg=`Bloque ${state.bloque} + ${DATA[state.bloque][state.macro].name} + "${state.sub}". Entrega 10 productos ganadores completos con JSON al final.`;
+Columnas EXACTAS — SIN URL: # | Producto | Recompra | Diferenciación | Ads | LTV | Saturación | Score | Clasificación
+
+---
+
+## 🔍 ANÁLISIS PROFUNDO POR PRODUCTO
+
+Para cada producto usa EXACTAMENTE esta estructura:
+
+### Producto [N] — [Nombre]
+
+**Marca referente:** [nombre]
+
+[Visitar página](url-real)
+
+**Score:** [X]/100 [emoji clasificación]
+
+**¿Por qué gana en DTC?** [2 líneas con el diferencial real de mercado]
+
+**🎯 Ángulos de venta ganadores:**
+- **[Nombre ángulo 1]:** "[Hook específico de 1 línea listo para usar en ad]"
+- **[Nombre ángulo 2]:** "[Hook específico]"
+- **[Nombre ángulo 3]:** "[Hook específico]"
+
+**📱 Estrategia paid media:**
+- **Meta Ads:** [formato, duración video, tipo creativo, targeting: edad + intereses + comportamientos específicos]
+- **TikTok:** [formato UGC/educativo, perfil del creador, hook primeros 3 segundos]
+- **Budget inicial:** $[X]/día | CPM est.: $[X] | CAC objetivo: $[X]
+
+**💰 Modelo de negocio:**
+- **Oferta principal:** [precio + contenido]
+- **Upsell:** [producto + precio]
+- **Suscripción:** [frecuencia + % descuento]
+- **LTV 12 meses est.:** $[X] USD
+
+**🔁 Recompra / Expansión:** [frecuencia o cross-sell]
+
+**🌎 Viabilidad LATAM:** [X]/10 — [justificación en 1 línea]
+
+---
+
+## 🏆 RANKING FINAL 1–10
+
+## 🚀 TOP 3 + PLAN DE ACCIÓN
+
+Creado por Juan Camilo Villada · Wifi Money Group
+Responde en español.`;
+
+  const msg=`Bloque ${state.bloque} + ${DATA[state.bloque][state.macro].name} + "${state.sub}". Entrega 10 productos ganadores con análisis técnico completo de marketing y JSON al final.`;
 
   try{
     const r=await fetch("/api/chat",{method:"POST",headers:{"Content-Type":"application/json"},
