@@ -138,30 +138,30 @@ main{max-width:1200px;margin:0 auto;padding:44px 40px 100px;}
 .result-content ul,.result-content ol{padding-left:24px;margin-bottom:14px;}
 .result-content li{margin-bottom:6px;}
 
-/* URL Buttons */
-.result-content a.url-btn{display:block;width:fit-content;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;background:rgba(79,163,255,0.1);border:1px solid rgba(79,163,255,0.28);color:var(--accent);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;margin:14px 0;backdrop-filter:var(--blur-sm);}
-.result-content a.url-btn:hover{background:rgba(79,163,255,0.2);border-color:rgba(79,163,255,0.5);transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,163,255,0.2);}
-.result-content a.url-btn::before{content:'🔗 ';font-size:13px;}
+/* Product cards */
+.prod-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:28px 32px;margin:20px 0;border-left:3px solid var(--accent);}
+.prod-card h3{font-size:19px;font-weight:800;color:#fff;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.prod-section{margin:14px 0;padding:14px 16px;background:rgba(255,255,255,0.03);border-radius:10px;}
+.prod-section-label{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px;}
+.prod-section-body{font-size:15px;line-height:1.7;color:rgba(240,244,255,0.85);}
+.prod-list-item{padding:4px 0 4px 12px;font-size:15px;color:rgba(240,244,255,0.8);border-left:2px solid rgba(79,163,255,0.3);margin:6px 0;}
+.prod-body-text{font-size:15px;line-height:1.7;color:rgba(240,244,255,0.85);margin:8px 0;}
+.result-section{margin:8px 0;}
+.result-section h2{font-size:24px;font-weight:800;color:#fff;margin:32px 0 16px;padding-bottom:10px;border-bottom:1px solid var(--glass-border);}
 
-/* Product section blocks */
-.result-content .prod-block{background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);border-radius:16px;padding:24px 28px;margin:24px 0;}
-.result-content .prod-meta{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 16px;}
-.result-content .prod-tag{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;}
-.result-content .tag-score{background:rgba(52,211,153,0.12);color:var(--green);}
-.result-content .tag-brand{background:rgba(79,163,255,0.12);color:var(--accent);}
-.result-content blockquote{border-left:3px solid var(--accent2);padding:10px 18px;background:rgba(167,139,250,0.07);border-radius:0 10px 10px 0;margin:14px 0;font-style:italic;color:rgba(240,244,255,0.75);}
-
-/* Section dividers */
-.result-content .section-divider{height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:32px 0;opacity:0.3;}
+/* URL Buttons — always block */
+.result-content a.url-btn,.prod-card a.url-btn{display:block;width:fit-content;padding:10px 22px;border-radius:10px;background:rgba(79,163,255,0.1);border:1px solid rgba(79,163,255,0.28);color:var(--accent);font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;margin:12px 0;backdrop-filter:var(--blur-sm);}
+.result-content a.url-btn:hover,.prod-card a.url-btn:hover{background:rgba(79,163,255,0.2);border-color:rgba(79,163,255,0.5);transform:translateY(-1px);box-shadow:0 4px 20px rgba(79,163,255,0.2);}
+.result-content a.url-btn::before,.prod-card a.url-btn::before{content:'🔗  ';}
 
 /* Tables */
-.result-content .table-wrap{overflow-x:auto;margin:20px 0;border-radius:16px;border:1px solid var(--glass-border);}
-.result-content table{width:100%;border-collapse:collapse;font-size:14px;}
-.result-content thead tr{background:linear-gradient(135deg,rgba(79,163,255,0.18),rgba(167,139,250,0.18));}
-.result-content th{padding:14px 16px;text-align:left;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:700;border-bottom:1px solid var(--glass-border);}
-.result-content td{padding:13px 16px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(240,244,255,.85);vertical-align:middle;}
-.result-content tbody tr:hover{background:rgba(79,163,255,0.04);}
-.result-content tbody tr:last-child td{border-bottom:none;}
+.result-content .table-wrap,.prod-card .table-wrap{overflow-x:auto;margin:20px 0;border-radius:14px;border:1px solid var(--glass-border);}
+.result-content table,.prod-card table{width:100%;border-collapse:collapse;font-size:14px;}
+.result-content thead tr,.prod-card thead tr{background:linear-gradient(135deg,rgba(79,163,255,0.18),rgba(167,139,250,0.18));}
+.result-content th,.prod-card th{padding:13px 16px;text-align:left;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:800;border-bottom:1px solid var(--glass-border);}
+.result-content td,.prod-card td{padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(240,244,255,.85);vertical-align:middle;font-size:14px;}
+.result-content tbody tr:hover,.prod-card tbody tr:hover{background:rgba(79,163,255,0.04);}
+.result-content tbody tr:last-child td,.prod-card tbody tr:last-child td{border-bottom:none;}
 
 /* Charts */
 .charts-section{margin-top:48px;}
@@ -517,76 +517,60 @@ function renderResults(raw){
   const resultsDiv=document.getElementById('results');
   const chartData=parseChartData(raw);
 
-  // Strip ALL code blocks (json, and any remnants)
-  let text=raw
-    .replace(/```[\s\S]*?```/g,'')
-    .replace(/`[^`]+`/g,'')
-    .trim();
+  // Strip ALL code blocks
+  let text=raw.replace(/```[\s\S]*?```/g,'').replace(/`[^`]+`/g,'').trim();
 
-  // Parse tables FIRST before any other processing
-  const lines = text.split('\n');
-  const processedLines = [];
-  let inTable = false;
-  let tableHTML = '';
-  let isFirstRow = true;
-
-  for(let i = 0; i < lines.length; i++){
-    const line = lines[i].trim();
-    // Detect separator row (|---|---|) — skip it
-    if(line.startsWith('|') && line.replace(/[\|\-\:\s]/g,'').length === 0){
-      continue;
-    }
+  // ── STEP 1: Parse tables ──────────────────────────────
+  const lines=text.split('\n');
+  const pass1=[];
+  let inTable=false,tableHTML='',isFirstRow=true;
+  for(let i=0;i<lines.length;i++){
+    const line=lines[i].trim();
+    if(line.startsWith('|')&&line.replace(/[\|\-\:\s]/g,'').length===0) continue;
     if(line.startsWith('|')){
-      if(!inTable){
-        inTable=true;
-        isFirstRow=true;
-        tableHTML='<div class="table-wrap"><table>';
-      }
+      if(!inTable){inTable=true;isFirstRow=true;tableHTML='<div class="table-wrap"><table>';}
       const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
-      if(isFirstRow){
-        tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
-        isFirstRow=false;
-      } else {
-        tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
-      }
+      if(isFirstRow){tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;isFirstRow=false;}
+      else tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
     } else {
-      if(inTable){
-        tableHTML+='</tbody></table></div>';
-        processedLines.push(tableHTML);
-        tableHTML='';inTable=false;isFirstRow=true;
-      }
-      processedLines.push(lines[i]);
+      if(inTable){tableHTML+='</tbody></table></div>';pass1.push('__TABLE__'+tableHTML+'__ENDTABLE__');tableHTML='';inTable=false;isFirstRow=true;}
+      pass1.push(lines[i]);
     }
   }
-  if(inTable) processedLines.push(tableHTML+'</tbody></table></div>');
-  text = processedLines.join('\n');
+  if(inTable) pass1.push('__TABLE__'+tableHTML+'</tbody></table></div>__ENDTABLE__');
+  text=pass1.join('\n');
 
-  // Now apply markdown formatting
-  let html = text
-    .replace(/^### (.+)$/gm,'<h3>$1</h3>')
-    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
-    .replace(/^# (.+)$/gm,'<h2>$1</h2>')
-    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g,'<em>$1</em>')
-    .replace(/^---$/gm,'<hr>')
-    .replace(/^>\s?(.+)$/gm,'<blockquote>$1</blockquote>')
-    // Markdown links → buttons
-    .replace(/\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener" class="url-btn">$1</a>')
-    // Plain URLs
-    .replace(/(?<!\"|href=\")(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
-    .replace(/🟢/g,'<span style="color:var(--green)">🟢</span>')
-    .replace(/🟡/g,'<span style="color:var(--gold)">🟡</span>')
-    .replace(/🔴/g,'<span style="color:var(--red)">🔴</span>');
+  // ── STEP 2: Split into sections by ### ────────────────
+  // Detect product sections (### Producto N — ...)
+  const sections=text.split(/(?=^### )/m);
 
+  let finalHTML='';
+  for(let sec of sections){
+    const isProdSection=/^### Producto \d+/i.test(sec.trim()) || /^### \d+[\.—–\-]/.test(sec.trim());
 
+    if(isProdSection){
+      // Parse product card
+      const secLines=sec.split('\n');
+      const title=secLines[0].replace(/^###\s*/,'').trim();
+      const body=secLines.slice(1).join('\n');
+
+      // Extract subsections by **Label:**
+      const bodyHtml=formatBody(body);
+      finalHTML+=`<div class="prod-card">${formatInline('<h3>'+title+'</h3>')}${bodyHtml}</div>`;
+    } else {
+      finalHTML+=formatSection(sec);
+    }
+  }
+
+  // ── Charts ────────────────────────────────────────────
   const chartsHTML=chartData?`
     <div class="charts-section">
       <div class="section-label">Visualización de Resultados</div>
       <div class="charts-grid">
-        <div class="chart-card glass-card"><div class="chart-title">📊 Score Total por <span>Producto</span></div><canvas id="chartBar"></canvas></div>
-        <div class="chart-card glass-card"><div class="chart-title">🎯 Distribución de <span>Clasificación</span></div><canvas id="chartDoughnut"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">📊 Score por <span>Producto</span></div><canvas id="chartBar"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">🎯 <span>Clasificación</span></div><canvas id="chartDoughnut"></canvas></div>
         <div class="chart-card glass-card"><div class="chart-title">🔁 Recompra vs <span>Diferenciación</span></div><canvas id="chartScatter"></canvas></div>
-        <div class="chart-card glass-card"><div class="chart-title">⚡ Potencial <span>Ads vs LTV</span></div><canvas id="chartBubble"></canvas></div>
+        <div class="chart-card glass-card"><div class="chart-title">⚡ Ads vs <span>LTV</span></div><canvas id="chartBubble"></canvas></div>
       </div>
     </div>`:'';
 
@@ -598,7 +582,7 @@ function renderResults(raw){
       </div>
     </div>
     <div class="glass-card" style="padding:36px 40px;margin-bottom:32px;">
-      <div class="result-content">${html}</div>
+      <div class="result-content">${finalHTML}</div>
     </div>
     ${chartsHTML}
     <div class="generate-wrap" style="margin-top:52px;">
@@ -608,6 +592,59 @@ function renderResults(raw){
 
   resultsDiv.scrollIntoView({behavior:'smooth'});
   if(chartData) setTimeout(()=>buildCharts(chartData),150);
+}
+
+function formatBody(body){
+  // Split by **Section:** labels at start of line or after newline
+  const parts=body.split(/\n(?=\*\*[^*]+:\*\*|\*\*[🎯📱💰🔁🌎][^*]*\*\*)/);
+  let html='';
+  for(let part of parts){
+    const labelMatch=part.match(/^\*\*([^*]+)\*\*\s*(.*)$/s);
+    if(labelMatch){
+      const label=labelMatch[1].trim();
+      const content=labelMatch[2].trim();
+      // URL button gets its own row
+      if(content.match(/^\[.+\]\(https?:\/\//)){
+        html+=`<div class="prod-section-label">${formatInline('**'+label+'**')}</div>`;
+        html+=formatInline(content);
+      } else {
+        html+=`<div class="prod-section">
+          <div class="prod-section-label">${formatInline('**'+label+'**')}</div>
+          <div class="prod-section-body">${formatInline(content)}</div>
+        </div>`;
+      }
+    } else if(part.trim()){
+      html+=`<div class="prod-body-text">${formatInline(part.trim())}</div>`;
+    }
+  }
+  return html;
+}
+
+function formatSection(text){
+  if(!text.trim()) return '';
+  // Handle table placeholders
+  text=text.replace(/__TABLE__([\s\S]*?)__ENDTABLE__/g,'$1');
+  let html=text
+    .replace(/^## (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.+)$/gm,'<h2>$1</h2>')
+    .replace(/^---$/gm,'<hr>');
+  return '<div class="result-section">'+formatInline(html)+'</div>';
+}
+
+function formatInline(text){
+  return text
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g,'<em>$1</em>')
+    .replace(/^- (.+)$/gm,'<div class="prod-list-item">→ $1</div>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener" class="url-btn">$1</a>')
+    .replace(/(?<!href=")(https?:\/\/[^\s<>"]+)/g,
+      '<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
+    .replace(/🟢/g,'<span style="color:var(--green)">🟢</span>')
+    .replace(/🟡/g,'<span style="color:var(--gold)">🟡</span>')
+    .replace(/🔴/g,'<span style="color:var(--red)">🔴</span>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
 }
 
 function newSearch(){
