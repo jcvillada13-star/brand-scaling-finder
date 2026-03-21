@@ -183,7 +183,14 @@ canvas{max-height:280px;}
 <!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-icon">🔭</div>
+    <div class="login-icon">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 32c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" fill="#00ff88"/>
+        <path d="M20 22c3.314 0 6.312 1.343 8.485 3.515l2.829-2.829C28.142 19.556 24.257 18 20 18s-8.142 1.556-11.314 4.686l2.829 2.829C13.688 23.343 16.686 22 20 22z" fill="#00ff88" opacity="0.8"/>
+        <path d="M20 14c6.627 0 12.627 2.686 16.971 7.029l2.829-2.829C34.899 13.3 27.85 10 20 10S5.101 13.3.2 18.2l2.829 2.829C7.373 16.686 13.373 14 20 14z" fill="#00ff88" opacity="0.5"/>
+        <path d="M20 6C9.507 6 .1 10.373-5.657 17.515l2.829 2.829C3.686 14.03 11.373 10 20 10s16.314 4.03 22.828 10.344l2.829-2.829C39.9 10.373 30.493 6 20 6z" fill="#00ff88" opacity="0.25"/>
+      </svg>
+    </div>
     <div class="login-app-name">Brand Scaling<br>Product Finder</div>
     <div class="login-subtitle">Detecta productos ganadores para e-commerce con inteligencia artificial. Análisis DTC, scoring completo y plan de acción.</div>
     <div class="login-badge">🔒 Plataforma privada · Solo miembros del programa</div>
@@ -200,10 +207,16 @@ canvas{max-height:280px;}
 <header>
   <div class="header-inner">
     <div class="logo-wrap">
-      <div class="logo-icon">🔭</div>
+      <div class="logo-icon">
+        <svg width="26" height="26" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 32c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z" fill="#00ff88"/>
+          <path d="M20 22c3.314 0 6.312 1.343 8.485 3.515l2.829-2.829C28.142 19.556 24.257 18 20 18s-8.142 1.556-11.314 4.686l2.829 2.829C13.688 23.343 16.686 22 20 22z" fill="#00ff88" opacity="0.8"/>
+          <path d="M20 14c6.627 0 12.627 2.686 16.971 7.029l2.829-2.829C34.899 13.3 27.85 10 20 10S5.101 13.3.2 18.2l2.829 2.829C7.373 16.686 13.373 14 20 14z" fill="#00ff88" opacity="0.55"/>
+        </svg>
+      </div>
       <div>
         <div class="logo-name">Brand Scaling · Product Finder</div>
-        <div class="logo-sub">Powered by Claude AI · Investigador Senior DTC</div>
+        <div class="logo-sub">By Juan Camilo Villada · Wifi Money Group</div>
       </div>
     </div>
     <div class="header-right">
@@ -371,25 +384,32 @@ async function generate(){
   const sys=`Eres un Investigador Senior DTC especializado en detectar productos ganadores para e-commerce.
 Trabajas bajo: Brand Scaling – WiFi Money | By Juan Camilo Villada.
 
-REGLAS:
+REGLAS CRÍTICAS:
 - Solo URLs de marcas/marketplaces reconocidos. NUNCA inventes links.
-- Formato URL OBLIGATORIO para cada producto: [Visitar página](https://url-real.com)
+- Los links [Visitar página](url) SOLO van en la sección de análisis profundo por producto, NUNCA en la tabla comparativa.
 - Solo productos con ángulo DTC claro.
-- AL FINAL de tu respuesta incluye este bloque JSON exacto (para gráficos automáticos):
+- AL FINAL incluye bloque JSON:
 \`\`\`json
-{"productos":[{"nombre":"Nombre corto max 20 chars","score":85,"recompra":22,"diferenciacion":21,"ads":17,"ltv":18,"saturacion":7}]}
+{"productos":[{"nombre":"Nombre corto","score":85,"recompra":22,"diferenciacion":21,"ads":17,"ltv":18,"saturacion":7}]}
 \`\`\`
 
 SCORING (0-100): Recompra→0-25 | Diferenciación→0-25 | Ads→0-20 | LTV→0-20 | Saturación→0-10
 Clasificación: 🟢 75-100 Ganador | 🟡 50-74 Testeable | 🔴 0-49 Débil
 
-FORMATO DE SALIDA:
-1. Tabla comparativa (columnas: #, Producto, URL botón, Recompra, Diferenciación, Ads, LTV, Saturación, Score, Clasificación)
-2. Análisis por producto con [Visitar página](url) para cada uno
-3. Ranking 1-10
-4. Top 3 + Plan de acción 3 pasos
-5. Bloque JSON (OBLIGATORIO al final)
+FORMATO DE SALIDA OBLIGATORIO:
 
+## 1. TABLA COMPARATIVA
+Columnas EXACTAS (sin columna URL): # | Producto | Recompra | Diferenciación | Ads | LTV | Saturación | Score | Clasificación
+Solo números en las columnas de scoring. Clasificación con emoji 🟢🟡🔴 y texto. NO incluir URLs en esta tabla.
+
+## 2. ANÁLISIS POR PRODUCTO
+Para cada producto: nombre, marca referente, [Visitar página](url-real), por qué gana, recompra/LTV.
+
+## 3. RANKING 1-10
+
+## 4. TOP 3 + PLAN DE ACCIÓN
+
+Creado por Juan Camilo Villada · Wifi Money Group
 Responde en español con markdown.`;
 
   const msg=`Bloque ${state.bloque} + ${DATA[state.bloque][state.macro].name} + "${state.sub}". Entrega 10 productos ganadores completos con JSON al final.`;
@@ -448,41 +468,68 @@ function buildCharts(data){
 function renderResults(raw){
   const resultsDiv=document.getElementById('results');
   const chartData=parseChartData(raw);
-  let text=raw.replace(/```json[\s\S]*?```/g,'').trim();
 
-  // Collect table rows
-  const tableRows=[];
-  let html=text
+  // Strip ALL code blocks (json, and any remnants)
+  let text=raw
+    .replace(/```[\s\S]*?```/g,'')
+    .replace(/`[^`]+`/g,'')
+    .trim();
+
+  // Parse tables FIRST before any other processing
+  const lines = text.split('\n');
+  const processedLines = [];
+  let inTable = false;
+  let tableHTML = '';
+  let isFirstRow = true;
+
+  for(let i = 0; i < lines.length; i++){
+    const line = lines[i].trim();
+    // Detect separator row (|---|---|) — skip it
+    if(line.startsWith('|') && line.replace(/[\|\-\:\s]/g,'').length === 0){
+      continue;
+    }
+    if(line.startsWith('|')){
+      if(!inTable){
+        inTable=true;
+        isFirstRow=true;
+        tableHTML='<div class="table-wrap"><table>';
+      }
+      const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
+      if(isFirstRow){
+        tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;
+        isFirstRow=false;
+      } else {
+        tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
+      }
+    } else {
+      if(inTable){
+        tableHTML+='</tbody></table></div>';
+        processedLines.push(tableHTML);
+        tableHTML='';inTable=false;isFirstRow=true;
+      }
+      processedLines.push(lines[i]);
+    }
+  }
+  if(inTable) processedLines.push(tableHTML+'</tbody></table></div>');
+  text = processedLines.join('\n');
+
+  // Now apply markdown formatting
+  let html = text
     .replace(/^### (.+)$/gm,'<h3>$1</h3>')
     .replace(/^## (.+)$/gm,'<h2>$1</h2>')
     .replace(/^# (.+)$/gm,'<h2>$1</h2>')
     .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.+?)\*/g,'<em>$1</em>')
     .replace(/^---$/gm,'<hr>')
-    // Links → buttons
+    .replace(/^>\s?(.+)$/gm,'<blockquote>$1</blockquote>')
+    // Markdown links → buttons
     .replace(/\[([^\]]*)\]\((https?:\/\/[^)]+)\)/g,'<a href="$2" target="_blank" rel="noopener" class="url-btn">$1</a>')
-    // Plain URLs after "URL:" label
-    .replace(/URL[^:]*:\s*(https?:\/\/\S+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
+    // Plain URLs
+    .replace(/(?<!\"|href=\")(https?:\/\/[^\s<>"]+)/g,'<a href="$1" target="_blank" rel="noopener" class="url-btn">Visitar página</a>')
     .replace(/🟢/g,'<span style="color:var(--green)">🟢</span>')
     .replace(/🟡/g,'<span style="color:var(--gold)">🟡</span>')
     .replace(/🔴/g,'<span style="color:var(--red)">🔴</span>');
 
-  // Tables
-  const lines=html.split('\n');
-  let inTable=false;let tableHTML='';let result=[];
-  for(let line of lines){
-    if(line.trim().startsWith('|')&&!line.includes('---')){
-      if(!inTable){inTable=true;tableHTML='<div class="table-wrap"><table>';}
-      const cells=line.split('|').filter((_,i,a)=>i>0&&i<a.length-1).map(c=>c.trim());
-      if(!tableRows.length){tableHTML+=`<thead><tr>${cells.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>`;tableRows.push(1);}
-      else tableHTML+=`<tr>${cells.map(c=>`<td>${c}</td>`).join('')}</tr>`;
-    } else {
-      if(inTable){tableHTML+='</tbody></table></div>';result.push(tableHTML);tableHTML='';inTable=false;tableRows.length=0;}
-      result.push(line);
-    }
-  }
-  if(inTable) result.push(tableHTML+'</tbody></table></div>');
-  html=result.join('\n');
 
   const chartsHTML=chartData?`
     <div class="charts-section">
